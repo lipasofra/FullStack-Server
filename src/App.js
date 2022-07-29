@@ -1,11 +1,4 @@
-import './App.css';
-
-const Note = ({ note }) => {
-  return (
-    <li>{note.content}</li>
-  )
-}
-
+import Note from './components/Note'
 
 const App = ({ notes }) => {
 
