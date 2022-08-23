@@ -1,50 +1,47 @@
-import Note from './components/Note'
 import { useState } from 'react'
+import './App.css'
 
-const App = ( props ) => {
+const App = () => {
 
-  const [notes, setNotes] = useState(props.notes)
-  const [newNote, setNewNote] = useState('a new note...')
-  const [showAll, setShowAll] = useState(true)
+  const [persons, setPersons] = useState([
+    { name: 'Arto Hellas' }
+  ]) 
+  const [newName, setNewName] = useState('')
 
-  const addNote = (event) => {
+  const addPerson = (event) => {
     event.preventDefault()
-    const noteObject = {
-      content: newNote,
-      date: new Date().toISOString(),
-      important: Math.random() < 0.5,
-      id: notes.length + 1,
+    console.log(newName)
+    const personObject = {
+      name: newName
     }
-    setNotes(notes.concat(noteObject))
-    setNewNote('')
+    setPersons(persons.concat(personObject))
+    setNewName('')
   }
 
-  const handleNoteChange = (event) => {
-    console.log(event.target.value)
-    setNewNote(event.target.value)
+  const handleChange = (event) => {
+    setNewName(event.target.value)
   }
-
-  const notesToShow = showAll
-    ? notes
-    : notes.filter(note => note.important)
 
   return (
     <div>
-      <h1>Notes</h1>
-      <div>
-        <button onClick={() => setShowAll(!showAll)}>
-          show {showAll ? 'important' : 'all'}
-        </button>
-      </div>
+      <h2>Phonebook</h2>
+      <form onSubmit={addPerson}>
+        <div>
+          name: <input 
+            value={newName}
+            onChange={handleChange}
+          />
+        </div>
+        <div>
+          <button type="submit">add</button>
+        </div>
+      </form>
+      <h2>Numbers</h2>
       <ul>
-        {notesToShow.map(note => 
-          <Note key={note.id} note={note}/>
+        {persons.map(person => 
+          <li key={person.name}>{person.name}</li>
         )}
       </ul>
-      <form onSubmit={addNote}>
-        <input value={newNote} onChange={handleNoteChange}/>
-        <button type='submit'>save</button>
-      </form>
     </div>
   )
 }
