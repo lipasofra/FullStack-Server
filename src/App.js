@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import './App.css'
+// import _ from 'lodash';
 
 const App = () => {
 
@@ -10,12 +11,19 @@ const App = () => {
 
   const addPerson = (event) => {
     event.preventDefault()
-    console.log(newName)
-    const personObject = {
-      name: newName
+    const toCompare = {name: newName}
+    
+    if(persons.some(person => JSON.stringify(person)===JSON.stringify(toCompare))){
+      alert(`${newName} is already added to phonebook`)
+      setNewName('')
+    }else{
+      const personObject = {
+        name: newName
+      }
+      setPersons(persons.concat(personObject))
+      setNewName('')
     }
-    setPersons(persons.concat(personObject))
-    setNewName('')
+   
   }
 
   const handleChange = (event) => {
