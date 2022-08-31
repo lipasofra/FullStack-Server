@@ -5,42 +5,69 @@ import './App.css'
 const App = () => {
 
   const [persons, setPersons] = useState([
-    { name: 'Arto Hellas', number: 1234567 }
+    { name: 'Arto Hellas', number: '1234567', id: 1 },
+    { name: 'Lina Lola', number: '3174121609', id: 2 },
+    { name: 'Ayra Maria', number: '963258741', id: 3 },
+    { name: 'Daniel Flechas', number: '3175689342', id: 4 }
   ]) 
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
-
+  const [filterNames, setFilterNames] = useState('')
+  const [showPersons, setShowPersons] = useState(persons)
 
   const addPerson = (event) => {
     event.preventDefault()
-    const toCompare = {name: newName}
+    const toCompare = newName
     
-    if(persons.some(person => JSON.stringify(person)===JSON.stringify(toCompare))){
+    if(persons.some(person => JSON.stringify(person.name)===JSON.stringify(toCompare))){
       alert(`${newName} is already added to phonebook`)
       setNewName('')
     }else{
       const personObject = {
         name: newName,
-        number: newNumber
+        number: newNumber,
+        id: persons.length + 1
       }
       setPersons(persons.concat(personObject))
+      setShowPersons(showPersons.concat(personObject))
       setNewName('')
       setNewNumber('')
     }
    
   }
-
+  
+  
   const handleChange = (event) => {
     setNewName(event.target.value)
   }
   const handleNumberChange = (event) => {
     setNewNumber(event.target.value)
   }
+  const handleFilter = (event) => {
+    setFilterNames(event.target.value)
+    showingData((event.target.value).toLowerCase())
+  }
+  const showingData = (text) => {
+    if(text!==''){
+      const filtered = persons.filter(person => (((person.name).toLowerCase()).includes(text) || ((person.number).toLowerCase()).includes(text)))
 
+      console.log(filtered)
+      setShowPersons(filtered)
+    } else {
+      setShowPersons(persons)
+    }
+  }
+  
   return (
     <div>
-      <h2>Phonebook</h2>
+      <h1>Phonebook</h1>
+        <div>
+          filter shown with <input 
+          value={filterNames}
+          onChange={handleFilter}/>
+        </div>
       <form onSubmit={addPerson}>
+      <h2>Add a new</h2>
         <div>
           name: <input 
             value={newName}
@@ -57,7 +84,7 @@ const App = () => {
       </form>
       <h2>Numbers</h2>
       <ul>
-        {persons.map(person => 
+        {showPersons.map(person => 
           <li key={person.name}>{person.name} {person.number}</li>
         )}
       </ul>
