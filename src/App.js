@@ -1,6 +1,8 @@
 import { useState } from 'react'
 import './App.css'
-// import _ from 'lodash';
+import Filter from './components/Filter'
+import PersonForm from './components/PersonForm'
+import PersonsList from './components/PersonsList'
 
 const App = () => {
 
@@ -50,8 +52,6 @@ const App = () => {
   const showingData = (text) => {
     if(text!==''){
       const filtered = persons.filter(person => (((person.name).toLowerCase()).includes(text) || ((person.number).toLowerCase()).includes(text)))
-
-      console.log(filtered)
       setShowPersons(filtered)
     } else {
       setShowPersons(persons)
@@ -61,33 +61,22 @@ const App = () => {
   return (
     <div>
       <h1>Phonebook</h1>
-        <div>
-          filter shown with <input 
-          value={filterNames}
-          onChange={handleFilter}/>
-        </div>
-      <form onSubmit={addPerson}>
+      <Filter 
+        filterNames={filterNames}
+        handleFilter={handleFilter}
+      />
       <h2>Add a new</h2>
-        <div>
-          name: <input 
-            value={newName}
-            onChange={handleChange}
-          />
-        </div>
-        <div>number : <input 
-          value={newNumber}
-          onChange={handleNumberChange}
-          /></div>
-        <div>
-          <button type="submit">add</button>
-        </div>
-      </form>
+      <PersonForm
+        addPerson={addPerson}
+        newName={newName}
+        handleChange={handleChange}
+        newNumber={newNumber}
+        handleNumberChange={handleNumberChange}
+      />
       <h2>Numbers</h2>
-      <ul>
-        {showPersons.map(person => 
-          <li key={person.name}>{person.name} {person.number}</li>
-        )}
-      </ul>
+      <PersonsList
+        showPersons={showPersons}
+        />
     </div>
   )
 }
