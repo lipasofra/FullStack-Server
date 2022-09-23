@@ -17,10 +17,16 @@ const deletingPerson = (id) => {
     return request.then(response => response.data)
 }
 
+const changeNumber = (id, changedPerson) => {
+    const request = axios.put(`${url}/${id}`, changedPerson)
+    return request.then(response => response.data)
+}
+
 const services = {
     create,
     getAll,
-    deletingPerson
+    deletingPerson,
+    changeNumber
 }
 
 

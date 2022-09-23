@@ -35,8 +35,19 @@ const App = () => {
     const toCompare = newName
     
     if(persons.some(person => JSON.stringify(person.name)===JSON.stringify(toCompare))){
-      alert(`${newName} is already added to phonebook`)
-      setNewName('')
+      if (window.confirm(
+        `${newName} is already added to phonebook, replace the old number with the new one?`)
+        ){
+          const personChange = persons.find(person => JSON.stringify(person.name)===JSON.stringify(toCompare))
+          const changedPerson = {...personChange, number: newNumber}
+          personService.changeNumber(personChange.id, changedPerson)
+          .then((personChanged)=>{
+            setPersons(persons.map(item => item.id !== personChange.id ? item : personChanged))
+            setShowPersons(persons.map(item => item.id !== personChange.id ? item : personChanged))
+            setNewName('')
+            setNewNumber('')
+          })
+          }
     }else{
       const personObject = {
         name: newName,
