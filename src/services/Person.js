@@ -12,9 +12,15 @@ const getAll = () => {
     return request.then(response => response.data)
 }
 
+const deletingPerson = (id) => {
+    const request = axios.delete(`${url}/${id}`)
+    return request.then(response => response.data)
+}
+
 const services = {
     create,
-    getAll
+    getAll,
+    deletingPerson
 }
 
 

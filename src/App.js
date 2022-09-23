@@ -21,6 +21,14 @@ const App = () => {
     })
   },[])
 
+  const onDelete = (person) => {
+    if (window.confirm(`Delete ${person.name} ?`))
+    personService.deletingPerson(person.id)
+    .then(()=>{
+      setPersons(persons.filter(item => item.id !== person.id))
+      setShowPersons(persons.filter(item => item.id !== person.id))
+    })
+  }
 
   const addPerson = (event) => {
     event.preventDefault()
@@ -33,7 +41,6 @@ const App = () => {
       const personObject = {
         name: newName,
         number: newNumber,
-        id: persons.length + 1
       }
 
       personService.create(personObject)
@@ -85,6 +92,7 @@ const App = () => {
       <h2>Numbers</h2>
       <PersonsList
         showPersons={showPersons}
+        onDelete={onDelete}
         />
     </div>
   )
