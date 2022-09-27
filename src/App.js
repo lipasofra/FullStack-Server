@@ -16,6 +16,7 @@ const App = () => {
   const [filterNames, setFilterNames] = useState('')
   const [showPersons, setShowPersons] = useState([])
   const [message, setMessage] = useState(null)
+  const [typeMessage, setTypeMessage] = useState('error')
 
 
   useEffect(() => {
@@ -47,6 +48,7 @@ const App = () => {
           const changedPerson = {...personChange, number: newNumber}
           personService.changeNumber(personChange.id, changedPerson)
           .then((personChanged)=>{
+            setTypeMessage('success')
             setMessage(`The number of ${personChanged.name} was succesfully changed`)
             setTimeout(() => {
               setMessage(null)
@@ -55,8 +57,18 @@ const App = () => {
             setShowPersons(persons.map(item => item.id !== personChange.id ? item : personChanged))
             setNewName('')
             setNewNumber('')
+          }).catch((error) => {
+            setTypeMessage('error')
+            setMessage(`Information of ${changedPerson.name} has already been removed from server`)
+            setTimeout(() => {
+              setMessage(null)
+            }, 5000)
+            setPersons(persons.filter(item => item.id !== changedPerson.id))
+            setShowPersons(persons.filter(item => item.id !== changedPerson.id))
+            setNewName('')
+            setNewNumber('')
           })
-          }
+        }
     }else{
       const personObject = {
         name: newName,
@@ -65,6 +77,7 @@ const App = () => {
 
       personService.create(personObject)
       .then(createdPerson => {
+        setTypeMessage('success')
         setMessage(`${createdPerson.name} was succesfully added`)
         setTimeout(() => {
           setMessage(null)
@@ -105,6 +118,7 @@ const App = () => {
         message ? 
         <Notification
           message={message}
+          type={typeMessage}
         /> :
         <></>
       }

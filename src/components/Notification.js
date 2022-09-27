@@ -1,8 +1,9 @@
 import React from 'react'
 
-const Notification = ({message}) => {
+const Notification = ({message, type}) => {
 
-    const messageStyle = {
+
+    const success = {
         color: 'green',
         background: 'lightgrey',
         fontSize: 20,
@@ -12,8 +13,20 @@ const Notification = ({message}) => {
         marginBottom: 10
     }
 
+    const error = {
+        color: 'red',
+        background: 'lightgrey',
+        fontSize: 20,
+        borderStyle: 'solid',
+        borderRadius: 5,
+        padding: 10,
+        marginBottom: 10
+    }
+
+    
+
     return (
-        <div style={messageStyle}>
+        <div style={type ==='success' ? success : error}>
           {message}
         </div>
     )
