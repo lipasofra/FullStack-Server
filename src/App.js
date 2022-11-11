@@ -86,7 +86,17 @@ const App = () => {
         setShowPersons(showPersons.concat(createdPerson))
         setNewName('')
         setNewNumber('')
-      })
+      }).catch(
+        error => {
+          setTypeMessage('error')
+          // setMessage(`Person validation failed: '${personObject.name}' should be longer than 2 characters`)
+          setMessage(`${error.response.data.error}`)
+          setTimeout(() => {
+            setMessage(null)
+          }, 5000)
+            console.log(error.response.data.error)
+        }
+    )
     }
    
   }
