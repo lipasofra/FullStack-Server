@@ -58,15 +58,25 @@ const App = () => {
             setNewName('')
             setNewNumber('')
           }).catch((error) => {
+            console.log(error.response.data.error)
             setTypeMessage('error')
-            setMessage(`Information of ${changedPerson.name} has already been removed from server`)
-            setTimeout(() => {
-              setMessage(null)
-            }, 5000)
-            setPersons(persons.filter(item => item.id !== changedPerson.id))
-            setShowPersons(persons.filter(item => item.id !== changedPerson.id))
-            setNewName('')
-            setNewNumber('')
+
+            if (error.response.status === 400) {
+              setMessage(`${error.response.data.error}`)
+              setTimeout(() => {
+                setMessage(null)
+              }, 5000)
+            } else {
+              setMessage(`Information of ${changedPerson.name} has already been removed from server`)
+              setTimeout(() => {
+                setMessage(null)
+              }, 5000)
+              setPersons(persons.filter(item => item.id !== changedPerson.id))
+              setShowPersons(persons.filter(item => item.id !== changedPerson.id))
+              setNewName('')
+              setNewNumber('')
+            }
+            
           })
         }
     }else{
